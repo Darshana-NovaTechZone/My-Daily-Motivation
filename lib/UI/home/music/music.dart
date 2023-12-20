@@ -484,8 +484,10 @@ class _MusicState extends State<Music> {
                               fit: BoxFit.cover,
                               height: h,
                               width: w,
-                              progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                  SizedBox(height: 20, width: 20, child: CircularProgressIndicator(value: downloadProgress.progress)),
+                              progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: SizedBox(height: 20, width: 20, child: CircularProgressIndicator(value: downloadProgress.progress))),
                               errorWidget: (context, url, error) => Icon(Icons.error),
                             ),
                             Container(

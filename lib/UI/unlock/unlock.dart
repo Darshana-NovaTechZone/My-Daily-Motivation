@@ -6,14 +6,15 @@ import 'package:my_daily_motivation/font/font.dart';
 import '../navigation/navigation.dart';
 import '../widget/mainButton.dart';
 
-class Unlock extends StatefulWidget {
-  const Unlock({super.key});
+class UnlockScreens extends StatefulWidget {
+  UnlockScreens({super.key, required this.isFromStartScreen});
+  final bool isFromStartScreen;
 
   @override
-  State<Unlock> createState() => _UnlockState();
+  State<UnlockScreens> createState() => _UnlockScreensState();
 }
 
-class _UnlockState extends State<Unlock> {
+class _UnlockScreensState extends State<UnlockScreens> {
   @override
   void initState() {
     // TODO: implement initState
@@ -38,11 +39,15 @@ class _UnlockState extends State<Unlock> {
             color: white70,
           ),
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => NavigationScreen(),
-                ));
+            if (widget.isFromStartScreen == true) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NavigationScreen(),
+                  ));
+            } else {
+              Navigator.pop(context);
+            }
           },
         ),
       ),
@@ -267,17 +272,20 @@ class _UnlockState extends State<Unlock> {
                 ),
               ),
             ),
-            MainButton(
-                color: liteBlue,
-                onTap: () {
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) => SelectTow(),
-                  //     ));
-                },
-                text: 'CONTINUE',
-                color2: white),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: MainButton(
+                  color: liteBlue,
+                  onTap: () {
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //       builder: (context) => SelectTow(),
+                    //     ));
+                  },
+                  text: 'CONTINUE',
+                  color2: white),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(

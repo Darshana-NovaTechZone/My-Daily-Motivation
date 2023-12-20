@@ -25,6 +25,38 @@ class ProviderS with ChangeNotifier {
     _duration = p;
     notifyListeners();
   }
+
+  int _selectedHours = 0;
+  int _selectedMin = 0;
+  int _isPm = 0;
+  int _count = 2;
+  int get count => _count;
+
+  set count(int p) {
+    _count = p;
+    notifyListeners();
+  }
+
+  int get selectedHours => _selectedHours;
+
+  set selectedHours(int p) {
+    _selectedHours = p;
+    notifyListeners();
+  }
+
+  int get selectedMin => _selectedMin;
+
+  set selectedMin(int p) {
+    _selectedMin = p;
+    notifyListeners();
+  }
+
+  int get isPm => _isPm;
+
+  set isPm(int p) {
+    _isPm = p;
+    notifyListeners();
+  }
 }
 
 // task--------------------------------------------------

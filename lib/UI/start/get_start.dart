@@ -87,17 +87,20 @@ class _GetStartState extends State<GetStart> {
                 Spacer(
                   flex: 2,
                 ),
-                MainButton(
-                    color: liteBlue,
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SelectOne(),
-                          ));
-                    },
-                    text: 'GET STARTED',
-                    color2: white),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: MainButton(
+                      color: liteBlue,
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SelectOne(),
+                            ));
+                      },
+                      text: 'GET STARTED',
+                      color2: white),
+                ),
                 Spacer(
                   flex: 1,
                 ),

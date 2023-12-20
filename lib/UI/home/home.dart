@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:gif_view/gif_view.dart';
 
 import 'package:my_daily_motivation/color/color.dart';
 import 'package:my_daily_motivation/font/font.dart';
-import 'package:video_player/video_player.dart';
+import 'package:page_transition/page_transition.dart';
+
+import 'login_ans_sign/login_landing.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -14,7 +17,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late VideoPlayerController _controller;
   ScrollController _scrollController = ScrollController();
   List gif = [
     {'text': 'WHY ONLY 1% SUCCEED', 'text2': 'BE INSPIRED', 'time': '6.34'},
@@ -28,14 +30,6 @@ class _HomeState extends State<Home> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _controller = VideoPlayerController.networkUrl(Uri.parse('https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'))
-      ..initialize().then((_) {
-        // _controller.videoPlayerOptions;
-        // _controller.value.duration;
-        // _controller.value.isLooping;
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {});
-      });
   }
 
   @override
@@ -49,12 +43,9 @@ class _HomeState extends State<Home> {
         controller: _scrollController,
         child: Column(
           children: [
-            // _controller.value.isInitialized
-            //     ? AspectRatio(
-            //         aspectRatio: _controller.value.aspectRatio,
-            //         child: VideoPlayer(_controller),
-            //       )
-            //     : Container(),
+            SizedBox(
+              height: 30,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -159,7 +150,9 @@ class _HomeState extends State<Home> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  share('hellow');
+                                },
                                 icon: Icon(
                                   Icons.share_outlined,
                                   color: white,
@@ -177,7 +170,15 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                             IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    PageTransition(
+                                      type: PageTransitionType.bottomToTop,
+                                      child: LoginLanding(),
+                                    ),
+                                  );
+                                },
                                 icon: Icon(
                                   Icons.star_border,
                                   color: white,
@@ -255,5 +256,9 @@ class _HomeState extends State<Home> {
         ),
       )),
     );
+  }
+
+  Future<void> share(String text) async {
+    await FlutterShare.share(title: 'Daily Motivation', text: text, linkUrl: 'https://www.novatechzone.com/', chooserTitle: 'Example Chooser Title');
   }
 }

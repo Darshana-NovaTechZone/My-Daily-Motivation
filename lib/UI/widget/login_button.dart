@@ -4,18 +4,18 @@ import 'package:my_daily_motivation/font/font.dart';
 
 import '../../color/color.dart';
 
-class MainButton extends StatefulWidget {
-  const MainButton({super.key, required this.text, required this.onTap, required this.color, required this.color2});
+class LoginButton extends StatefulWidget {
+  const LoginButton({super.key, required this.text, required this.onTap, required this.color, required this.color2});
   final String text;
   final VoidCallback onTap;
   final Color color;
   final Color color2;
 
   @override
-  State<MainButton> createState() => _MainButtonState();
+  State<LoginButton> createState() => _LoginButtonState();
 }
 
-class _MainButtonState extends State<MainButton> {
+class _LoginButtonState extends State<LoginButton> {
   bool tap = false;
   @override
   Widget build(BuildContext context) {
@@ -56,20 +56,29 @@ class _MainButtonState extends State<MainButton> {
         child: Container(
           alignment: Alignment.center,
           height: h / 14,
-          width: w,
+          width: w / 1.3,
           decoration: BoxDecoration(
             color: widget.color,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Text(
-            widget.text,
-            style: TextStyle(
-              color: widget.color2,
-              fontFamily: font,
-              fontSize: 17.dp,
-              letterSpacing: 2,
-              fontWeight: FontWeight.bold,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 25, child: Image.asset('assets/icons8-paper-plane-30.png')),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                widget.text,
+                style: TextStyle(
+                  color: widget.color2,
+                  fontFamily: font,
+                  fontSize: 17.dp,
+                  letterSpacing: 2,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
       ),

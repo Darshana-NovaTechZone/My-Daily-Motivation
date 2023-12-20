@@ -8,6 +8,8 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:my_daily_motivation/color/color.dart';
 
+import '../home/discover/discover.dart';
+import '../home/fovorites/favorites.dart';
 import '../home/home.dart';
 import '../home/music/music.dart';
 import '../home/music/play.dart';
@@ -39,7 +41,7 @@ class _NavigationScreenState extends State<NavigationScreen> with TickerProvider
   AnimationController? _controller;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   Tween<double> _tween = Tween(begin: 0.75, end: 2);
-  static List<Widget> _pages = <Widget>[Home(), Icon(Icons.abc), Music(), Quotes(), MyApp()];
+  static List<Widget> _pages = <Widget>[Home(), Discover(), Music(), Quotes(), Favorites()];
   void _onItemTapped(int index) {
     print(index);
     log('ffff');
@@ -72,85 +74,83 @@ class _NavigationScreenState extends State<NavigationScreen> with TickerProvider
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          key: _scaffoldKey,
-          extendBody: true,
-          bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: navColor,
-            // unselectedLabelStyle: TextStyle(fontSize: 11.sp),
-            landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
-            unselectedIconTheme: IconThemeData(
-              color: navUnselectColor,
+    return Scaffold(
+        key: _scaffoldKey,
+        extendBody: true,
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: navColor,
+          // unselectedLabelStyle: TextStyle(fontSize: 11.sp),
+          landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
+          unselectedIconTheme: IconThemeData(
+            color: navUnselectColor,
+          ),
+          unselectedItemColor: navUnselectColor,
+          selectedIconTheme: IconThemeData(
+            color: white,
+          ),
+          selectedItemColor: white,
+          onTap: _onItemTapped,
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _selectedIndex,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                size: 25.dp,
+              ),
+              label: 'Home',
             ),
-            unselectedItemColor: navUnselectColor,
-            selectedIconTheme: IconThemeData(
-              color: white,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.explore,
+                fill: 0.5,
+                size: 25.dp,
+              ),
+              label: 'DISCOVER',
             ),
-            selectedItemColor: white,
-            onTap: _onItemTapped,
-            showSelectedLabels: true,
-            showUnselectedLabels: true,
-            type: BottomNavigationBarType.fixed,
-            currentIndex: _selectedIndex,
-            items: <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                  size: 25.dp,
-                ),
-                label: 'Home',
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.library_music_sharp,
+                fill: 0.5,
+                size: 25.dp,
               ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.explore,
-                  fill: 0.5,
-                  size: 25.dp,
-                ),
-                label: 'DISCOVER',
+              label: 'MUSIC',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.format_quote_sharp,
+                fill: 0.5,
+                size: 26.dp,
               ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.library_music_sharp,
-                  fill: 0.5,
-                  size: 25.dp,
-                ),
-                label: 'MUSIC',
+              label: 'QUOTES',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.star,
+                size: 25.dp,
               ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.format_quote_sharp,
-                  fill: 0.5,
-                  size: 26.dp,
+              label: 'FAVORITES',
+            ),
+          ],
+        ),
+
+        // bottomNavigationBar: BottomAppBar(),
+
+        // drawer: CustomDrawer(),
+        body: SizedBox(
+          // height: MediaQuery.of(context).size.height,
+          child: Stack(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: Center(
+                  child: _pages.elementAt(_selectedIndex), //New
                 ),
-                label: 'QUOTES',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.star,
-                  size: 25.dp,
-                ),
-                label: 'FAVORITES',
               ),
             ],
           ),
-
-          // bottomNavigationBar: BottomAppBar(),
-
-          // drawer: CustomDrawer(),
-          body: SizedBox(
-            // height: MediaQuery.of(context).size.height,
-            child: Stack(
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  child: Center(
-                    child: _pages.elementAt(_selectedIndex), //New
-                  ),
-                ),
-              ],
-            ),
-          )),
-    );
+        ));
   }
 }

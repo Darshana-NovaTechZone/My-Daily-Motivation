@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:my_daily_motivation/UI/home/quotes/Qutes_theme/quotes_theme.dart';
 
@@ -7,6 +8,7 @@ import 'package:my_daily_motivation/color/color.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../../font/font.dart';
+import '../login_ans_sign/login_landing.dart';
 
 class Quotes extends StatefulWidget {
   const Quotes({super.key});
@@ -152,7 +154,9 @@ class _QuotesState extends State<Quotes> {
                     ),
                     Spacer(),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        share('Seventy percent of success in life is showing up');
+                      },
                       child: Container(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -168,7 +172,15 @@ class _QuotesState extends State<Quotes> {
                       width: 10,
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.bottomToTop,
+                            child: LoginLanding(),
+                          ),
+                        );
+                      },
                       child: Container(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -188,5 +200,9 @@ class _QuotesState extends State<Quotes> {
         ],
       ),
     );
+  }
+
+  Future<void> share(String text) async {
+    await FlutterShare.share(title: 'Daily Motivation', text: text, linkUrl: 'https://www.novatechzone.com/', chooserTitle: 'Example Chooser Title');
   }
 }
