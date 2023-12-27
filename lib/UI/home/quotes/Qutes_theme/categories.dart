@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:my_daily_motivation/UI/unlock/unlock.dart';
 
 import 'package:my_daily_motivation/color/color.dart';
+import 'package:page_transition/page_transition.dart';
 
 import '../../../../font/font.dart';
 
@@ -13,6 +15,19 @@ class Categories extends StatefulWidget {
 }
 
 class _CategoriesState extends State<Categories> {
+    List img = [
+    {'img': 'assets/1.PNG', 'text': 'FOCUS'},
+    {'img': 'assets/2.PNG', 'text': 'FITNES'},
+    {'img': 'assets/3.PNG', 'text': 'DISCIPLINE'},
+    {'img': 'assets/4.PNG', 'text': 'WEALTH'},
+    {'img': 'assets/5.PNG', 'text': 'HAPPINESS'},
+    {'img': 'assets/7.PNG', 'text': 'CONFIDENCE'},
+    {'img': 'assets/8.PNG', 'text': 'STRESS & ANXIETY'},
+    {'img': 'assets/9.PNG', 'text': 'WAKING UP EARLY'},
+    {'img': 'assets/7.PNG', 'text': 'CONFIDENCE'},
+    {'img': 'assets/8.PNG', 'text': 'STRESS & ANXIETY'},
+    {'img': 'assets/9.PNG', 'text': 'WAKING UP EARLY'},
+  ];
   @override
   void initState() {
     // TODO: implement initState
@@ -193,68 +208,79 @@ class _CategoriesState extends State<Categories> {
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Stack(
-                  children: [
-                    Container(
-                      width: w / 2.2,
-                      height: h / 6,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
-                              image: AssetImage(
-                                'assets/8.PNG',
-                              ),
-                              fit: BoxFit.cover)),
-                    ),
-                    Container(
-                      width: w / 2.2,
-                      height: h / 6,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(7), color: black.withOpacity(0.4)),
-                    ),
-                    1 == 1
-                        ? Positioned(
-                            left: 4,
-                            top: 4,
-                            child: Card(
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                              color: black.withOpacity(0.4),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                                child: Text(
-                                  'PRO',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: white,
-                                    fontFamily: font,
-                                    fontSize: 12.dp,
-                                    wordSpacing: 1,
-                                    fontWeight: FontWeight.w700,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                        type: PageTransitionType.bottomToTop,
+                        child: UnlockScreens(isFromStartScreen: false),
+                      ),
+                    );
+                  },
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: w / 2.2,
+                        height: h / 6,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            image: DecorationImage(
+                                image: AssetImage(
+                                  'assets/8.PNG',
+                                ),
+                                fit: BoxFit.cover)),
+                      ),
+                      Container(
+                        width: w / 2.2,
+                        height: h / 6,
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(7), color: black.withOpacity(0.4)),
+                      ),
+                      1 == 1
+                          ? Positioned(
+                              left: 4,
+                              top: 4,
+                              child: Card(
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                                color: black.withOpacity(0.4),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                                  child: Text(
+                                    'PRO',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: white,
+                                      fontFamily: font,
+                                      fontSize: 12.dp,
+                                      wordSpacing: 1,
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ))
-                        : SizedBox(),
-                    Positioned(
-                      bottom: 0,
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      child: Center(
-                        child: Text(
-                          'Essentials',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: white2,
-                            fontFamily: 'font',
-                            fontSize: 14.dp,
-                            wordSpacing: 1,
-                            letterSpacing: 1.5,
-                            fontWeight: FontWeight.bold,
+                              ))
+                          : SizedBox(),
+                      Positioned(
+                        bottom: 0,
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        child: Center(
+                          child: Text(
+                            'Essentials',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: white2,
+                              fontFamily: 'font',
+                              fontSize: 14.dp,
+                              wordSpacing: 1,
+                              letterSpacing: 1.5,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },

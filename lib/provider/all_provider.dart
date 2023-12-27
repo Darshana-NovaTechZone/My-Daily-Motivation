@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class ProviderS with ChangeNotifier {
@@ -30,6 +32,14 @@ class ProviderS with ChangeNotifier {
   int _selectedMin = 0;
   int _isPm = 0;
   int _count = 2;
+  bool _isTap = false;
+  bool get isTap => _isTap;
+
+  set isTap(bool p) {
+    _isTap = p;
+    notifyListeners();
+  }
+
   int get count => _count;
 
   set count(int p) {
@@ -55,6 +65,38 @@ class ProviderS with ChangeNotifier {
 
   set isPm(int p) {
     _isPm = p;
+    notifyListeners();
+  }
+
+  double _progressValue = 0.0;
+  double get progressValue => _progressValue;
+
+  set progressValue(double p) {
+    _progressValue = p;
+    notifyListeners();
+  }
+
+  int _status = 0;
+  int get status => _status;
+
+  set status(int p) {
+    _status = p;
+    notifyListeners();
+  }
+
+  int _themeIndex = 0;
+  int get themeIndex => _themeIndex;
+
+  set themeIndex(int p) {
+    _themeIndex = p;
+    notifyListeners();
+  }
+
+  String _imgName = '';
+  String get imgName => _imgName;
+
+  set imgName(String p) {
+    _imgName = p;
     notifyListeners();
   }
 }

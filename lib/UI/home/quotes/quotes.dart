@@ -5,8 +5,11 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:my_daily_motivation/UI/home/quotes/Qutes_theme/quotes_theme.dart';
 
 import 'package:my_daily_motivation/color/color.dart';
+import 'package:my_daily_motivation/provider/all_provider.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 
+import '../../../db/sqldb.dart';
 import '../../../font/font.dart';
 import '../login_ans_sign/login_landing.dart';
 
@@ -18,6 +21,7 @@ class Quotes extends StatefulWidget {
 }
 
 class _QuotesState extends State<Quotes> {
+  SqlDb sqlDb = SqlDb();
   final List<String> images = [
     'https://images.unsplash.com/photo-1586882829491-b81178aa622e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80',
     'https://images.unsplash.com/photo-1586871608370-4adee64d1794?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2862&q=80',
@@ -29,175 +33,193 @@ class _QuotesState extends State<Quotes> {
   ];
   @override
   void initState() {
+    localData();
     // TODO: implement initState
     super.initState();
+  }
+
+  localData() async {
+    List res = await SqlDb().readData('select * from theme');
+    print(res);
+
+    Provider.of<ProviderS>(context, listen: false).status = res[0]['status'];
+    Provider.of<ProviderS>(context, listen: false).imgName = res[0]['img'];
+    Provider.of<ProviderS>(context, listen: false).themeIndex = res[0]['index'];
+    print(Provider.of<ProviderS>(context, listen: false).imgName);
   }
 
   @override
   Widget build(BuildContext context) {
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
-    return Scaffold(
-      backgroundColor: background,
-      body: Stack(
-        children: [
-          Container(
-              child: CarouselSlider.builder(
-            itemCount: images.length,
-            options: CarouselOptions(autoPlay: false, aspectRatio: 2.0, viewportFraction: 1, enlargeCenterPage: true, height: h),
-            itemBuilder: (context, index, realIdx) {
-              return Stack(
-                children: [
-                  Container(
-                    child: Center(
-                        child: Image.network(
-                      images[index],
-                      fit: BoxFit.cover,
-                      width: w,
-                      height: h,
-                    )),
-                  ),
-                  Container(
-                    width: w,
-                    height: h,
-                    color: black.withOpacity(0.5),
-                  ),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            "Seventy percent of success in life is showing up",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: white,
-                              fontFamily: font,
-                              fontSize: 26.dp,
-                              wordSpacing: 1,
-                              letterSpacing: 1.5,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "Woody Allen",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: white.withOpacity(0.9),
-                              fontFamily: font,
-                              fontSize: 14.dp,
-                              wordSpacing: 1,
-                              letterSpacing: 5,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            },
-          )),
-          Positioned(
-            bottom: 100,
-            right: 0,
-            left: 0,
-            child: SizedBox(
-              width: w,
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          PageTransition(
-                            type: PageTransitionType.bottomToTop,
-                            child: QuotesThemes(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.grid_view_rounded,
-                              color: white,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "Essentials",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: white,
-                                fontFamily: font,
-                                fontSize: 12.dp,
-                                wordSpacing: 1,
-                                letterSpacing: 1.5,
-                                fontWeight: FontWeight.bold,
+    return Consumer<ProviderS>(
+      builder: (context, provider, child) => Scaffold(
+        backgroundColor: background,
+        body: Stack(
+          children: [
+            Container(
+                width: w,
+                height: h,
+                decoration: BoxDecoration(image: DecorationImage(image: AssetImage(provider.imgName), fit: BoxFit.cover)),
+                child: CarouselSlider.builder(
+                  itemCount: images.length,
+                  options: CarouselOptions(autoPlay: false, aspectRatio: 2.0, viewportFraction: 1, enlargeCenterPage: true, height: h),
+                  itemBuilder: (context, index, realIdx) {
+                    return Stack(
+                      children: [
+                        provider.status == 1
+                            ? SizedBox()
+                            : Container(
+                                child: Center(
+                                    child: Image.network(
+                                  images[index],
+                                  fit: BoxFit.cover,
+                                  width: w,
+                                  height: h,
+                                )),
                               ),
+                        Container(
+                          width: w,
+                          height: h,
+                          color: black.withOpacity(0.5),
+                        ),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "Seventy percent of success in life is showing up",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: white,
+                                    fontFamily: font,
+                                    fontSize: 26.dp,
+                                    wordSpacing: 1,
+                                    letterSpacing: 1.5,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "Woody Allen",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: white.withOpacity(0.9),
+                                    fontFamily: font,
+                                    fontSize: 14.dp,
+                                    wordSpacing: 1,
+                                    letterSpacing: 5,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        height: 40,
-                        decoration: BoxDecoration(color: black.withOpacity(0.7), borderRadius: BorderRadius.circular(30)),
-                      ),
-                    ),
-                    Spacer(),
-                    InkWell(
-                      onTap: () {
-                        share('Seventy percent of success in life is showing up');
-                      },
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.share_outlined,
-                            color: white,
                           ),
                         ),
-                        decoration: BoxDecoration(color: black.withOpacity(0.7), shape: BoxShape.circle),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          PageTransition(
-                            type: PageTransitionType.bottomToTop,
-                            child: LoginLanding(),
+                      ],
+                    );
+                  },
+                )),
+            Positioned(
+              bottom: 100,
+              right: 0,
+              left: 0,
+              child: SizedBox(
+                width: w,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.bottomToTop,
+                              child: QuotesThemes(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.grid_view_rounded,
+                                color: white,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                "Essentials",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: white,
+                                  fontFamily: font,
+                                  fontSize: 12.dp,
+                                  wordSpacing: 1,
+                                  letterSpacing: 1.5,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
-                        );
-                      },
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.star_border,
-                            color: white,
-                          ),
+                          height: 40,
+                          decoration: BoxDecoration(color: black.withOpacity(0.7), borderRadius: BorderRadius.circular(30)),
                         ),
-                        decoration: BoxDecoration(color: black.withOpacity(0.7), shape: BoxShape.circle),
                       ),
-                    ),
-                  ],
+                      Spacer(),
+                      InkWell(
+                        onTap: () {
+                          share('Seventy percent of success in life is showing up');
+                        },
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.share_outlined,
+                              color: white,
+                            ),
+                          ),
+                          decoration: BoxDecoration(color: black.withOpacity(0.7), shape: BoxShape.circle),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.bottomToTop,
+                              child: LoginLanding(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.star_border,
+                              color: white,
+                            ),
+                          ),
+                          decoration: BoxDecoration(color: black.withOpacity(0.7), shape: BoxShape.circle),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

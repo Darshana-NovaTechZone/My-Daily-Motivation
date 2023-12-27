@@ -22,7 +22,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   final ScrollOffsetController scrollOffsetController = ScrollOffsetController();
   final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
   final ScrollOffsetListener scrollOffsetListener = ScrollOffsetListener.create();
-  List hours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  List hours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   List min = [00];
   List minn = new List<int>.generate(60, (i) => i + 1);
   List count = new List<int>.generate(5, (i) => i + 1);
@@ -43,10 +43,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
       // add your code here.
-
+      print('ddddddddddddddddddddddddddddddddddddddddddd');
       Provider.of<ProviderS>(context, listen: false).selectedHours = 6;
       Provider.of<ProviderS>(context, listen: false).selectedMin = 6;
       Provider.of<ProviderS>(context, listen: false).isPm = 1;
+      print(Provider.of<ProviderS>(context, listen: false).selectedHours);
     });
   }
 
@@ -239,7 +240,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
                             child: Text(
-                              "${provider.selectedHours.toString().length == 1 ? '0${provider.selectedHours}' : ''}:${provider.selectedMin.toString().length == 1 ? '0${provider.selectedMin}' : ''} ${provider.isPm == 1 ? 'PM' : 'AM'}",
+                              "${provider.selectedHours.toString().length == 1 ? '0${provider.selectedHours}' : '${provider.selectedHours}'}:${provider.selectedMin.toString().length == 1 ? '0${provider.selectedMin}' : '${provider.selectedMin}'} ${provider.isPm == 1 ? 'PM' : 'AM'}",
                               style: TextStyle(
                                 color: white,
                                 fontFamily: font,
@@ -389,38 +390,42 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       children: [
                         Expanded(
                           child: ScrollablePositionedList.builder(
-                            initialScrollIndex: selectedHours,
+                            initialScrollIndex: provider.selectedHours,
                             itemCount: hours.length,
-                            itemBuilder: (context, index) => InkWell(
-                              onTap: () {
-                                SetState(() {
-                                  selectedHours = index;
-                                  print(selectedHours);
-                                });
-                              },
-                              child: SizedBox(
-                                width: w / 5,
-                                child: Card(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                                  color: selectedHours == index ? liteBlue : font_gray,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                                    child: Text(
-                                      hours[index].toString(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: white,
-                                        fontFamily: font,
-                                        fontSize: 14.dp,
-                                        wordSpacing: 1,
-                                        letterSpacing: 1.5,
-                                        fontWeight: FontWeight.bold,
+                            itemBuilder: (context, index) {
+                              print(Provider.of<ProviderS>(context, listen: false).selectedHours);
+                              return InkWell(
+                                onTap: () {
+                                  SetState(() {
+                                    Provider.of<ProviderS>(context, listen: false).selectedHours = index;
+                                    selectedHours = index;
+                                    print(selectedHours);
+                                  });
+                                },
+                                child: SizedBox(
+                                  width: w / 5,
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                                    color: provider.selectedHours == index ? liteBlue : font_gray,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                                      child: Text(
+                                        hours[index].toString(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: white,
+                                          fontFamily: font,
+                                          fontSize: 14.dp,
+                                          wordSpacing: 1,
+                                          letterSpacing: 1.5,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
+                              );
+                            },
                             itemScrollController: itemScrollController,
                             scrollOffsetController: scrollOffsetController,
                             itemPositionsListener: itemPositionsListener,
@@ -429,20 +434,20 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         ),
                         Expanded(
                           child: ScrollablePositionedList.builder(
-                            initialScrollIndex: selectedMin,
+                            initialScrollIndex: provider.selectedMin,
                             itemCount: min.length,
                             itemBuilder: (context, index) => InkWell(
                               onTap: () {
                                 SetState(() {
-                                  selectedMin = index;
-                                  print(selectedMin);
+                                  Provider.of<ProviderS>(context, listen: false).selectedMin = index;
+                                  print(Provider.of<ProviderS>(context, listen: false).selectedMin);
                                 });
                               },
                               child: SizedBox(
                                 width: w / 5,
                                 child: Card(
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                                  color: selectedMin == index ? liteBlue : font_gray,
+                                  color: provider.selectedMin == index ? liteBlue : font_gray,
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                                     child: Text(
@@ -540,8 +545,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     child: MainButton(
                         color: liteBlue,
                         onTap: () {
-                          Provider.of<ProviderS>(context, listen: false).selectedHours = selectedHours;
-                          Provider.of<ProviderS>(context, listen: false).selectedMin = selectedMin;
+                          Provider.of<ProviderS>(context, listen: false).selectedHours;
+                          Provider.of<ProviderS>(context, listen: false).selectedMin;
                           Provider.of<ProviderS>(context, listen: false).isPm = isPm;
                           Navigator.pop(context);
                         },

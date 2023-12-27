@@ -35,39 +35,84 @@ class _MusicState extends State<Music> {
   Duration newDuration = Duration();
   bool loop = false;
   ScrollController _scrollController = ScrollController();
+  List img = [
+    {'img': 'assets/1.PNG', 'text': 'FOCUS'},
+    {'img': 'assets/2.PNG', 'text': 'FITNES'},
+    {'img': 'assets/3.PNG', 'text': 'DISCIPLINE'},
+    {'img': 'assets/4.PNG', 'text': 'WEALTH'},
+    {'img': 'assets/5.PNG', 'text': 'HAPPINESS'},
+    {'img': 'assets/7.PNG', 'text': 'CONFIDENCE'},
+    {'img': 'assets/8.PNG', 'text': 'STRESS & ANXIETY'},
+    {'img': 'assets/9.PNG', 'text': 'WAKING UP EARLY'},
+    {'img': 'assets/7.PNG', 'text': 'CONFIDENCE'},
+    {'img': 'assets/8.PNG', 'text': 'STRESS & ANXIETY'},
+    {'img': 'assets/9.PNG', 'text': 'WAKING UP EARLY'},
+  ];
   List audio = [
     {
+      'img': 'assets/1.PNG',
       'text': 'ENERGY',
       'text2': 'ENERGY',
       'time': '4.42',
       'isfro': 1,
       'a': 'https://cld2099web.audiovideoweb.com/va90web25003/companions/Foundations%20of%20Rock/13.01.mp3'
     },
-    {'text': 'INSPIRATIONAL', 'text2': 'Last Tear', 'time': '4.42', 'isfro': 1, 'a': 'https://s3.amazonaws.com/scifri-segments/scifri201711241.mp3'},
     {
+      'img': 'assets/2.PNG',
+      'text': 'INSPIRATIONAL',
+      'text2': 'Last Tear',
+      'time': '4.42',
+      'isfro': 1,
+      'a': 'https://s3.amazonaws.com/scifri-segments/scifri201711241.mp3'
+    },
+    {
+      'img': 'assets/3.PNG',
       'text': 'FOCUS',
       'text2': 'ENERGY',
       'time': '4.42',
       'isfro': 1,
       'a': 'https://cld2099web.audiovideoweb.com/va90web25003/companions/Foundations%20of%20Rock/13.01.mp3'
     },
-    {'text': 'ENERGY', 'text2': 'ENERGY', 'time': '4.42', 'isfro': 2, 'a': 'https://s3.amazonaws.com/scifri-segments/scifri201711241.mp3'},
     {
+      'img': 'assets/4.PNG',
+      'text': 'ENERGY',
+      'text2': 'ENERGY',
+      'time': '4.42',
+      'isfro': 2,
+      'a': 'https://s3.amazonaws.com/scifri-segments/scifri201711241.mp3'
+    },
+    {
+      'img': 'assets/5.PNG',
       'text': 'ENERGY',
       'text2': 'ENERGY',
       'time': '4.42',
       'isfro': 2,
       'a': 'https://cld2099web.audiovideoweb.com/va90web25003/companions/Foundations%20of%20Rock/13.01.mp3'
     },
-    {'text': 'ENERGY', 'text2': 'ENERGY', 'time': '4.42', 'isfro': 2, 'a': 'https://s3.amazonaws.com/scifri-segments/scifri201711241.mp3'},
     {
+      'img': 'assets/2.PNG',
+      'text': 'ENERGY',
+      'text2': 'ENERGY',
+      'time': '4.42',
+      'isfro': 2,
+      'a': 'https://s3.amazonaws.com/scifri-segments/scifri201711241.mp3'
+    },
+    {
+      'img': 'assets/7.PNG',
       'text': 'ENERGY',
       'text2': 'ENERGY',
       'time': '4.42',
       'isfro': 1,
       'a': 'https://cld2099web.audiovideoweb.com/va90web25003/companions/Foundations%20of%20Rock/13.01.mp3'
     },
-    {'text': 'ENERGY', 'text2': 'ENERGY', 'time': '4.42', 'isfro': 1, 'a': 'https://s3.amazonaws.com/scifri-segments/scifri201711241.mp3'}
+    {
+      'img': 'assets/8.PNG',
+      'text': 'ENERGY',
+      'text2': 'ENERGY',
+      'time': '4.42',
+      'isfro': 1,
+      'a': 'https://s3.amazonaws.com/scifri-segments/scifri201711241.mp3'
+    }
   ];
   void startTimer() {
     const oneSec = const Duration(seconds: 1);
@@ -167,6 +212,21 @@ class _MusicState extends State<Music> {
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        title: Text(
+          "MUSIC",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: white.withOpacity(0.8),
+            fontFamily: font,
+            fontSize: 32.dp,
+            wordSpacing: 1,
+            letterSpacing: 1.5,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
       bottomNavigationBar: isClickSong
           ? Consumer<ProviderS>(
               builder: (context, provider, child) => Container(
@@ -284,21 +344,6 @@ class _MusicState extends State<Music> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Text(
-                "MUSIC",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: white,
-                  fontFamily: font,
-                  fontSize: 32.dp,
-                  wordSpacing: 1,
-                  letterSpacing: 1.5,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
             SizedBox(
               width: w,
               child: GridView.builder(
@@ -345,7 +390,7 @@ class _MusicState extends State<Music> {
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: Image.asset(
-                                'assets/3.PNG',
+                                audio[index]['img'],
                                 height: h / 3,
                                 width: w,
                                 fit: BoxFit.cover,

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:my_daily_motivation/UI/navigation/navigation.dart';
 
 import 'package:my_daily_motivation/color/color.dart';
+import 'package:page_transition/page_transition.dart';
 
+import '../../../class/email_validate.dart';
 import '../../../font/font.dart';
 import '../../widget/login_button.dart';
 import '../../widget/mainButton.dart';
+import 'login.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -15,6 +19,11 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  bool isViable = true;
+  TextEditingController name = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  bool _isValid = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -81,6 +90,8 @@ class _SignUpState extends State<SignUp> {
                   Spacer(),
                   SizedBox(
                     child: TextField(
+                      style: TextStyle(color: white),
+                      controller: name,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.all(20),
                         prefixIcon: Icon(Icons.person, color: white.withOpacity(0.5)),
@@ -97,7 +108,15 @@ class _SignUpState extends State<SignUp> {
                   ),
                   SizedBox(
                     child: TextField(
+                      controller: email,
+                      style: TextStyle(color: white),
+                      onChanged: (value) {
+                        setState(() {
+                          _isValid = EmailVal().isValidEmail(value!);
+                        });
+                      },
                       decoration: InputDecoration(
+                        errorText: _isValid ? "" : "enter valid email",
                         contentPadding: EdgeInsets.all(20),
                         prefixIcon: Icon(Icons.send, color: white.withOpacity(0.5)),
                         border: InputBorder.none,
@@ -113,10 +132,19 @@ class _SignUpState extends State<SignUp> {
                   ),
                   SizedBox(
                     child: TextField(
+                      controller: password,
+                      style: TextStyle(color: white),
+                      obscureText: isViable,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.all(20),
                         prefixIcon: Icon(Icons.lock, color: white.withOpacity(0.5)),
-                        suffixIcon: Icon(Icons.visibility, color: white.withOpacity(0.5)),
+                        suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                isViable = !isViable;
+                              });
+                            },
+                            icon: Icon(isViable ? Icons.visibility_off : Icons.visibility, color: white.withOpacity(0.5))),
                         border: InputBorder.none,
                         filled: true,
                         hintStyle: TextStyle(color: white.withOpacity(0.5)),
@@ -167,7 +195,26 @@ class _SignUpState extends State<SignUp> {
                     color2: white,
                     color: liteBlue,
                     text: 'SIGN UP',
-                    onTap: () {},
+                    onTap: () {
+                      if (password.text.isNotEmpty) {
+                        if (_isValid) {
+                          if (password.text.isNotEmpty) {
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => NavigationScreen(),
+                                ),
+                                (route) => false);
+                          } else {
+                            EmailVal().msg(context, "Enter password");
+                          }
+                        } else {
+                          EmailVal().msg(context, "Enter valid email");
+                        }
+                      } else {
+                        EmailVal().msg(context, "Enter name");
+                      }
+                    },
                   ),
                   SizedBox(
                     height: 12,
@@ -189,7 +236,15 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.bottomToTop,
+                              child: Login(),
+                            ),
+                          );
+                        },
                         child: Text(
                           "Log in",
                           textAlign: TextAlign.center,

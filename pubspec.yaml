@@ -38,7 +38,6 @@ dependencies:
   flutter_sizer: ^1.0.5
   gif_view:
   scrollable_positioned_list: ^0.3.8 
-  youtube_player_flutter: ^8.1.2
   carousel_slider: ^4.2.1
   # audioplayers:
   http:
@@ -49,6 +48,12 @@ dependencies:
   page_transition: 
   appbar_animated:
   flutter_share: ^2.0.0
+  video_player:
+  video_thumbnail:
+  top_snackbar_flutter: ^3.1.0
+  email_validator: 
+  sqflite: ^2.3.0
+
   
 
 dev_dependencies:
